@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellness Protocol | Premium Access</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .premium-lock {
+            filter: blur(10px);
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.6;
+        }
+
+        .modal-overlay {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(6px);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Admin Highlight */
+        .admin-editable {
+            outline: 2px dashed transparent;
+            transition: all 0.2s;
+        }
+        .admin-mode .admin-editable {
+            outline: 2px dashed #6366f1;
+            background: #f5f3ff;
+            cursor: pointer;
+        }
+
+        .whatsapp-float {
+            box-shadow: 0 4px 14px 0 rgba(37, 211, 102, 0.39);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-24">
+
+    <!-- Admin Floating Toggle (Hidden Gear) -->
+    <div id="adminToggle" onclick="toggleAdminMode()" class="fixed bottom-24 right-6 z-[200] w-10 h-10 bg-slate-900/5 hover:bg-slate-900/20 rounded-full flex items-center justify-center cursor-pointer transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-300"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+    </div>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/254759500240?text=Hello%20JS%20Wellness,%20I'm%20on%20the%20app%20and%20have%20a%20question%20about%20my%20nutrition%20plan." target="_blank" class="whatsapp-float fixed bottom-6 right-6 z-[200] w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform active:scale-95">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.94 3.659 1.437 5.63 1.438h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </a>
+
+    <!-- Header Section -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-md mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold gradient-text leading-none">JS Wellness</h1>
+                <p class="text-[10px] uppercase tracking-wider text-slate-500 font-bold mt-1">Premium Portal</p>
+            </div>
+            <div class="flex gap-2">
+                <a href="https://wa.me/254759500240?text=I%20need%20support%20with%20my%20wellness%20portal." target="_blank" class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-3 py-2 rounded-full border border-emerald-100 uppercase tracking-tighter">Support</a>
+                <button id="loginBtn" class="text-[10px] font-bold text-slate-600 bg-slate-100 px-3 py-2 rounded-full uppercase tracking-tighter">Login</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="mainContainer" class="max-w-md mx-auto px-6 mt-8">
+        
+        <!-- Hero Section -->
+        <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white mb-8 shadow-2xl relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="bg-emerald-400 text-slate-900 px-2 py-0.5 rounded text-[10px] font-black uppercase">Active</span>
+                    <span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Protocol v4.0</span>
+                </div>
+                <h2 contenteditable="false" class="admin-editable text-3xl font-bold mb-3 tracking-tight" id="heroTitle">The Metabolic Reset</h2>
+                <p contenteditable="false" class="admin-editable text-slate-400 text-sm leading-relaxed mb-6" id="heroDesc">Access the full non-exercise nutrition strategy to transform your metabolism.</p>
+                <div class="flex items-center gap-2 text-emerald-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span class="text-xs font-bold uppercase">Personalized for You</span>
+                </div>
+            </div>
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl"></div>
+        </div>
+
+        <!-- PREVIEW BOX -->
+        <div class="bg-white rounded-3xl p-6 border border-slate-100 mb-8 shadow-sm">
+            <h3 class="font-bold text-slate-800 mb-2">Introduction</h3>
+            <p contenteditable="false" class="admin-editable text-sm text-slate-500 leading-relaxed" id="introText">This protocol is strictly nutritional. By adjusting your feeding windows and food order, we target the belly fat without increasing cortisol through intense exercise.</p>
+        </div>
+
+        <!-- Dynamic Content Area (Unlocked) -->
+        <div id="dynamicSections" class="space-y-6">
+            <!-- Sections will be inserted here -->
+        </div>
+
+        <!-- PAYWALLED CONTENT START -->
+        <div id="premiumContent" class="premium-lock relative">
+            <div id="lockOverlay" class="absolute inset-0 z-20 flex flex-col items-center justify-start pt-16 px-6 bg-gradient-to-b from-transparent via-f8fafc/90 to-f8fafc">
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100 text-center w-full max-w-sm">
+                    <div class="w-16 h-16 bg-slate-900 text-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-slate-900 mb-2">Unlock Premium Guide</h4>
+                    <p class="text-sm text-slate-500 mb-6">One-time payment for lifetime access to the full meal plan and food list.</p>
+                    <div class="text-center mb-6">
+                        <span class="text-4xl font-black text-slate-900">$49</span>
+                        <span class="text-slate-400 font-bold">.00</span>
+                    </div>
+                    <button onclick="openPayment()" class="w-full bg-slate-900 text-white font-bold py-4 rounded-2xl shadow-xl hover:bg-slate-800 transition-all">Get Instant Access</button>
+                    <a href="https://wa.me/254759500240?text=Hello,%20I'm%20having%20trouble%20paying%20for%20the%20Wellness%20Protocol.%20I%20would%20like%20to%20pay%20to%20Till%203045973." target="_blank" class="block mt-6 text-[10px] text-slate-400 font-medium uppercase tracking-widest underline">Payment issues? Message me on WhatsApp</a>
+                </div>
+            </div>
+
+            <!-- Content Area for Premium Data -->
+            <div id="premiumDynamicSections" class="space-y-6"></div>
+        </div>
+
+        <!-- Admin Add Section Button -->
+        <div id="adminAddActions" class="hidden mt-8 space-y-4">
+            <button onclick="addNewSection()" class="w-full bg-indigo-600 text-white font-bold py-4 rounded-2xl shadow-lg flex items-center justify-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add New Nutritional Info
+            </button>
+            <button onclick="saveAllChanges()" class="w-full bg-emerald-600 text-white font-bold py-4 rounded-2xl shadow-lg">Save Changes</button>
+        </div>
+
+    </main>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="hidden fixed inset-0 z-[100] modal-overlay flex items-end sm:items-center justify-center">
+        <div class="bg-white w-full max-w-md rounded-t-[2.5rem] sm:rounded-[2.5rem] p-8 animate-slide-up shadow-inner">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900">Direct Payment</h3>
+                    <p class="text-xs text-slate-500">Till Number: <span class="font-bold text-slate-900">3045973</span></p>
+                </div>
+                <button onclick="closePayment()" class="h-8 w-8 bg-slate-100 rounded-full flex items-center justify-center text-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <div class="space-y-6 mb-8">
+                <div>
+                    <label class="text-[10px] uppercase font-bold text-slate-400 ml-2 mb-2 block">Enter Mobile Number</label>
+                    <div class="border-2 border-slate-100 rounded-2xl p-4 flex items-center gap-3 focus-within:border-slate-900 transition-colors">
+                        <span class="text-slate-400 font-bold">+254</span>
+                        <input type="tel" id="phoneNumber" placeholder="759500240" class="bg-transparent text-lg font-bold w-full outline-none text-slate-900">
+                    </div>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl flex justify-between items-center border border-slate-100">
+                    <span class="text-sm font-semibold text-slate-600">Total Due</span>
+                    <span class="text-xl font-black text-slate-900">$49.00</span>
+                </div>
+            </div>
+            <button onclick="initiateSTKPush()" id="payBtn" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl shadow-xl flex items-center justify-center gap-2">
+                <span id="btnText">Send Payment Prompt</span>
+                <div id="loader" class="hidden w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            </button>
+            <div class="mt-6 p-4 bg-blue-50 rounded-2xl flex items-center gap-3">
+                <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <p class="text-[11px] text-blue-700 font-medium">After paying, you can WhatsApp the receipt to 0759500240 if access doesn't auto-unlock.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div id="successOverlay" class="hidden fixed inset-0 z-[120] bg-white flex flex-col items-center justify-center p-8 text-center">
+        <div class="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6 animate-bounce">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h2 class="text-2xl font-bold text-slate-900 mb-2">Payment Received!</h2>
+        <p class="text-slate-500 mb-8 leading-relaxed">Thank you. Your premium wellness protocol is now fully unlocked.</p>
+        <button onclick="revealContent()" class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-bold shadow-lg">Enter Protocol</button>
+    </div>
+
+    <script>
+        // State Management
+        let isAdminMode = false;
+        let contentData = {
+            heroTitle: "The Metabolic Reset",
+            heroDesc: "Access the full non-exercise nutrition strategy to transform your metabolism.",
+            introText: "This protocol is strictly nutritional. By adjusting your feeding windows and food order, we target the belly fat without increasing cortisol through intense exercise.",
+            sections: [
+                { id: 1, title: "Optimal Plate Balance", content: "Prioritize 40% Protein, 35% Healthy Fats, and 25% Fiber to stabilize blood sugar.", premium: true },
+                { id: 2, title: "The 11:00 AM Rule", content: "Do not eat before 11:00 AM to maximize overnight fat oxidation.", premium: true }
+            ]
+        };
+
+        function init() {
+            const saved = localStorage.getItem('wellness_data');
+            if (saved) contentData = JSON.parse(saved);
+            renderContent();
+        }
+
+        function renderContent() {
+            document.getElementById('heroTitle').innerText = contentData.heroTitle;
+            document.getElementById('heroDesc').innerText = contentData.heroDesc;
+            document.getElementById('introText').innerText = contentData.introText;
+
+            const freeArea = document.getElementById('dynamicSections');
+            const premiumArea = document.getElementById('premiumDynamicSections');
+            freeArea.innerHTML = '';
+            premiumArea.innerHTML = '';
+
+            contentData.sections.forEach(sec => {
+                const html = `
+                    <div class="section-card bg-white rounded-3xl p-6 shadow-sm border border-slate-100 relative group">
+                        ${isAdminMode ? `<button onclick="removeSection(${sec.id})" class="absolute -top-2 -right-2 bg-rose-500 text-white rounded-full p-1 shadow-md">✕</button>` : ''}
+                        <h3 contenteditable="${isAdminMode}" class="admin-editable text-lg font-bold text-slate-800 mb-2" onblur="updateSection(${sec.id}, 'title', this.innerText)">${sec.title}</h3>
+                        <p contenteditable="${isAdminMode}" class="admin-editable text-sm text-slate-500 leading-relaxed" onblur="updateSection(${sec.id}, 'content', this.innerText)">${sec.content}</p>
+                    </div>
+                `;
+                if (sec.premium) premiumArea.innerHTML += html;
+                else freeArea.innerHTML += html;
+            });
+        }
+
+        function toggleAdminMode() {
+            const pin = prompt("Enter Admin PIN to update content:");
+            if (pin === "3045") {
+                isAdminMode = !isAdminMode;
+                document.body.classList.toggle('admin-mode', isAdminMode);
+                document.getElementById('adminAddActions').classList.toggle('hidden', !isAdminMode);
+                document.querySelectorAll('.admin-editable').forEach(el => { el.contentEditable = isAdminMode; });
+                renderContent();
+            } else { alert("Incorrect PIN."); }
+        }
+
+        function addNewSection() {
+            contentData.sections.push({ id: Date.now(), title: "New Pillar", content: "Edit content...", premium: true });
+            renderContent();
+        }
+
+        function removeSection(id) {
+            contentData.sections = contentData.sections.filter(s => s.id !== id);
+            renderContent();
+        }
+
+        function updateSection(id, field, val) {
+            const sec = contentData.sections.find(s => s.id === id);
+            if (sec) sec[field] = val;
+        }
+
+        function saveAllChanges() {
+            contentData.heroTitle = document.getElementById('heroTitle').innerText;
+            contentData.heroDesc = document.getElementById('heroDesc').innerText;
+            contentData.introText = document.getElementById('introText').innerText;
+            localStorage.setItem('wellness_data', JSON.stringify(contentData));
+            alert("Changes Saved!");
+            isAdminMode = false;
+            document.getElementById('adminAddActions').classList.add('hidden');
+            renderContent();
+        }
+
+        function openPayment() { document.getElementById('paymentModal').classList.remove('hidden'); }
+        function closePayment() { document.getElementById('paymentModal').classList.add('hidden'); }
+        
+        function initiateSTKPush() {
+            const phone = document.getElementById('phoneNumber').value;
+            if(!phone) return alert("Enter phone number");
+            document.getElementById('btnText').textContent = 'Pushing to ' + phone + '...';
+            document.getElementById('loader').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('paymentModal').classList.add('hidden');
+                document.getElementById('successOverlay').classList.remove('hidden');
+            }, 3000);
+        }
+
+        function revealContent() {
+            document.getElementById('successOverlay').classList.add('hidden');
+            document.getElementById('premiumContent').classList.remove('premium-lock');
+            document.getElementById('lockOverlay').classList.add('hidden');
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
